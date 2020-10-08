@@ -1,0 +1,32 @@
+name: flutter_setup
+description: A new Flutter setup application for starting a project.
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.0
+  # Service locator
+  get_it: ^5.0.1
+  # Provider state management
+  provider: ^4.3.2+2
+  # Remote API
+  data_connection_checker: ^0.3.4
+  dio: ^3.0.10
+  freezed: ^0.12.1
+  #Local cache
+  shared_preferences: ^0.5.12
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
