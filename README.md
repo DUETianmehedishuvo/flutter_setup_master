@@ -1,6 +1,6 @@
-# flutter_setup
+# ecommerce_ael
 
-A new Flutter setup application for starting a project.
+A new Flutter application.
 
 ## Getting Started
 
