@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:ecommerce_ael/data/model/response/base/error_response.dart';
-
+import 'package:tutorial/data/model/response/base/error_response.dart';
 class ApiErrorHandler {
   static dynamic getMessage(error) {
     dynamic errorDescription = "";
@@ -8,21 +7,21 @@ class ApiErrorHandler {
       try {
         if (error is DioError) {
           switch (error.type) {
-            case DioErrorType.CANCEL:
+            case DioErrorType.cancel:
               errorDescription = "Request to API server was cancelled";
               break;
-            case DioErrorType.CONNECT_TIMEOUT:
+            case DioErrorType.connectTimeout:
               errorDescription = "Connection timeout with API server";
               break;
-            case DioErrorType.DEFAULT:
+            case DioErrorType.other:
               errorDescription =
                   "Connection to API server failed due to internet connection";
               break;
-            case DioErrorType.RECEIVE_TIMEOUT:
+            case DioErrorType.receiveTimeout:
               errorDescription =
                   "Receive timeout in connection with API server";
               break;
-            case DioErrorType.RESPONSE:
+            case DioErrorType.response:
               switch (error.response.statusCode) {
                 case 404:
                 case 500:
@@ -40,7 +39,7 @@ class ApiErrorHandler {
                         "Failed to load data - status code: ${error.response.statusCode}";
               }
               break;
-            case DioErrorType.SEND_TIMEOUT:
+            case DioErrorType.sendTimeout:
               errorDescription = "Send timeout with server";
               break;
           }

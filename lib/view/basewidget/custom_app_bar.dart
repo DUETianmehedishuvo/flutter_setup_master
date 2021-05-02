@@ -1,58 +1,39 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:ecommerce_ael/provider/theme_provider.dart';
-import 'package:ecommerce_ael/utill/custom_themes.dart';
-import 'package:ecommerce_ael/utill/dimensions.dart';
-import 'package:ecommerce_ael/utill/images.dart';
-import 'package:provider/provider.dart';
+import 'package:tutorial/util/custom_themes.dart';
+import 'package:tutorial/util/dimensions.dart';
 
-class CustomAppBar extends StatelessWidget {
+// ignore: must_be_immutable
+class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
-  final isBackButtonExist;
-  final IconData icon;
-  final Function onActionPressed;
+  final bool isBackButtonExist;
+  final Function onBackPressed;
+  final GlobalKey<ScaffoldState> drawerKey;
+  final bool isResponsive;
 
-  CustomAppBar({@required this.title, this.isBackButtonExist = true, this.icon, this.onActionPressed});
+  CustomAppBar({@required this.title, this.isBackButtonExist = true, this.onBackPressed, this.drawerKey, this.isResponsive});
+
+  DateTime selectedDate = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
-    return Stack(children: [
-      ClipRRect(
-        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(5), bottomRight: Radius.circular(5)),
-        // child: Image.asset(
-        //   Images.toolbar_background, fit: BoxFit.fill,
-        //   height: 50+MediaQuery.of(context).padding.top, width: MediaQuery.of(context).size.width,
-        //   color: Provider.of<ThemeProvider>(context).darkTheme ? Colors.black : null,
-        // ),
-      ),
-      Container(
-        margin: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-        height: 50,
-        alignment: Alignment.center,
-        child: Row(children: [
-          isBackButtonExist
-              ? IconButton(
-                  icon: Icon(Icons.arrow_back_ios, size: 20, color: Colors.white),
-                  onPressed: () => Navigator.of(context).pop(),
-                )
-              : SizedBox.shrink(),
-          SizedBox(width: Dimensions.PADDING_SIZE_SMALL),
-          Expanded(
-            child: Text(
-              title,
-              style: titilliumRegular.copyWith(fontSize: 20, color: Colors.white),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-          icon != null
-              ? IconButton(
-                  icon: Icon(icon, size: Dimensions.ICON_SIZE_LARGE, color: Colors.white),
-                  onPressed: onActionPressed,
-                )
-              : SizedBox.shrink(),
-        ]),
-      ),
-    ]);
+    return AppBar(
+      title: Text(title,
+          style:
+              robotoRegular.copyWith(fontSize: isResponsive ? 20 : Dimensions.FONT_SIZE_LARGE, color: Theme.of(context).textTheme.bodyText1.color)),
+      //centerTitle: true,
+      leading: isBackButtonExist
+          ? IconButton(
+              icon: Icon(Icons.arrow_back_ios),
+              color: Theme.of(context).textTheme.bodyText1.color,
+              onPressed: () async {
+                Navigator.pop(context);
+              })
+          : SizedBox(),
+      backgroundColor: Theme.of(context).accentColor,
+      elevation: 0,
+    );
   }
+
+  @override
+  Size get preferredSize => Size(double.maxFinite, 50);
 }

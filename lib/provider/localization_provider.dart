@@ -1,6 +1,6 @@
-import 'package:ecommerce_ael/utill/app_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tutorial/util/app_constant.dart';
 
 class LocalizationProvider extends ChangeNotifier {
   final SharedPreferences sharedPreferences;
@@ -11,44 +11,37 @@ class LocalizationProvider extends ChangeNotifier {
 
   Locale _locale = Locale('en', 'US');
   bool _isLtr = true;
-  int _languageIndex;
 
   Locale get locale => _locale;
+
   bool get isLtr => _isLtr;
-  int get languageIndex => _languageIndex;
+
+  saveLanguageStatus(bool status) async {
+    await sharedPreferences.setBool(AppConstant.SELECT_LANGUAGE_STATUS, status);
+    notifyListeners();
+  }
+
+  bool get getLanguageStatus => sharedPreferences.getBool(AppConstant.SELECT_LANGUAGE_STATUS) ?? true;
 
   void setLanguage(Locale locale) {
-    if(locale.languageCode == 'en'){
-      _locale = Locale('en', 'US');
-      _isLtr = true;
-    }else {
-      _locale = Locale('ar', 'SA');
+    _locale = locale;
+    if (_locale.languageCode == 'ar') {
       _isLtr = false;
+    } else {
+      _isLtr = true;
     }
-    AppConstants.languages.forEach((language) {
-      if(language.languageCode == _locale.languageCode) {
-        _languageIndex = AppConstants.languages.indexOf(language);
-      }
-    });
-
     _saveLanguage(_locale);
     notifyListeners();
   }
 
   _loadCurrentLanguage() async {
-    _locale = Locale(sharedPreferences.getString(AppConstants.LANGUAGE_CODE) ?? 'en',
-        sharedPreferences.getString(AppConstants.COUNTRY_CODE) ?? 'US');
+    _locale = Locale(sharedPreferences.getString(AppConstant.LANGUAGE_CODE) ?? 'en', sharedPreferences.getString(AppConstant.COUNTRY_CODE) ?? 'US');
     _isLtr = _locale.languageCode == 'en';
-    AppConstants.languages.forEach((language) {
-      if(language.languageCode == _locale.languageCode) {
-        _languageIndex = AppConstants.languages.indexOf(language);
-      }
-    });
     notifyListeners();
   }
 
   _saveLanguage(Locale locale) async {
-    sharedPreferences.setString(AppConstants.LANGUAGE_CODE, locale.languageCode);
-    sharedPreferences.setString(AppConstants.COUNTRY_CODE, locale.countryCode);
+    sharedPreferences.setString(AppConstant.LANGUAGE_CODE, locale.languageCode);
+    sharedPreferences.setString(AppConstant.COUNTRY_CODE, locale.countryCode);
   }
 }

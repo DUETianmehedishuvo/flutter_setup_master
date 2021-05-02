@@ -1,21 +1,22 @@
 import 'package:dio/dio.dart';
 
 class LoggingInterceptor extends InterceptorsWrapper {
+
   int maxCharactersPerLine = 200;
 
-  @override
-  Future onRequest(RequestOptions options) {
-    print("--> ${options.method} ${options.path}");
-    print("Headers: ${options.headers.toString()}");
-    print("<-- END HTTP");
+@override
+  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
+  print("--> ${options.method} ${options.path}");
+  print("Headers: ${options.headers.toString()}");
+  print("<-- END HTTP");
 
-    return super.onRequest(options);
+    super.onRequest(options, handler);
   }
 
   @override
-  Future onResponse(Response response) {
+  void onResponse(Response response, ResponseInterceptorHandler handler) {
     print(
-        "<-- ${response.statusCode} ${response.request.method} ${response.request.path}");
+        "<-- ${response.statusCode} ${response.requestOptions.method} ${response.requestOptions.path}");
 
     String responseAsString = response.data.toString();
 
@@ -35,12 +36,12 @@ class LoggingInterceptor extends InterceptorsWrapper {
 
     print("<-- END HTTP");
 
-    return super.onResponse(response);
+    super.onResponse(response, handler);
   }
 
   @override
-  Future onError(DioError err) {
-    print("ERROR[${err?.response?.statusCode}] => PATH: ${err?.request?.path}");
-    return super.onError(err);
+  void onError(DioError err, ErrorInterceptorHandler handler) {
+    print("ERROR[${err?.response?.statusCode}] => PATH: ${err?.requestOptions?.path}");
+    super.onError(err, handler);
   }
 }

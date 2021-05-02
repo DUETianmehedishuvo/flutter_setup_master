@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:ecommerce_ael/utill/app_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:tutorial/util/app_constant.dart';
 
 class AppLocalization {
   AppLocalization(this.locale);
@@ -34,7 +34,7 @@ class _DemoLocalizationsDelegate extends LocalizationsDelegate<AppLocalization> 
   @override
   bool isSupported(Locale locale) {
     List<String> _languageString = [];
-    AppConstants.languages.forEach((language) {
+    AppConstant.languages.forEach((language) {
       _languageString.add(language.languageCode);
     });
     return _languageString.contains(locale.languageCode);

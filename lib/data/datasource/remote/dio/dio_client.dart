@@ -1,9 +1,9 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:ecommerce_ael/data/datasource/remote/dio/logging_interceptor.dart';
-import 'package:ecommerce_ael/utill/app_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tutorial/data/datasource/remote/dio/logging_interceptor.dart';
+import 'package:tutorial/util/app_constant.dart';
 
 class DioClient {
   final String baseUrl;
@@ -18,8 +18,8 @@ class DioClient {
         this.loggingInterceptor,
         this.sharedPreferences,
       }) {
-    token = sharedPreferences.getString(AppConstants.TOKEN);
-    print("NNNN $token");
+    token = sharedPreferences.getString(AppConstant.TOKEN);
+    print(token);
     dio = dioC ?? Dio();
     dio
       ..options.baseUrl = baseUrl

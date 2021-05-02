@@ -1,5 +1,5 @@
-import 'package:ecommerce_ael/utill/custom_themes.dart';
 import 'package:flutter/material.dart';
+import 'package:tutorial/util/custom_themes.dart';
 
 class SingleTextAlertDialog extends StatelessWidget {
   final String message;

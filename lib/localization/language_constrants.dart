@@ -1,5 +1,5 @@
-import 'package:ecommerce_ael/localization/app_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:tutorial/localization/app_localization.dart';
 
 String getTranslated(String key, BuildContext context) {
   return AppLocalization.of(context).translate(key);

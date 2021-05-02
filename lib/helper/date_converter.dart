@@ -5,12 +5,17 @@ class DateConverter {
     return DateFormat('yyyy-MM-dd hh:mm:ss').format(dateTime);
   }
 
+  static String dateFormatStyle2() {
+    String date = DateFormat('d MMMM, yyyy').format(DateTime.now());
+    return date ;
+  }
+
   static String estimatedDate(DateTime dateTime) {
-    return DateFormat('dd MMM yyyy').format(dateTime);
+    return DateFormat('dd MMMM yyyy').format(dateTime);
   }
 
   static DateTime convertStringToDatetime(String dateTime) {
-    return DateFormat("yyyy-MM-dd hh:mm:ss").parse(dateTime);
+    return DateFormat("dd-MMM-yyyy").parse(dateTime);
   }
 
   static DateTime isoStringToLocalDate(String dateTime) {
@@ -18,7 +23,7 @@ class DateConverter {
   }
 
   static String isoStringToLocalTimeOnly(String dateTime) {
-    return DateFormat('HH:mm').format(isoStringToLocalDate(dateTime));
+    return DateFormat('dd-M-yyyy').format(isoStringToLocalDate(dateTime));
   }
 
   static String isoStringToLocalDateOnly(String dateTime) {
@@ -26,6 +31,12 @@ class DateConverter {
   }
 
   static String localDateToIsoString(DateTime dateTime) {
-    return DateFormat('yyyy-MM-dd HH:mm:ss').format(dateTime.toUtc());
+    return DateFormat('dd-MMM-yyyy').format(dateTime.toUtc());
+  }
+
+  static String formatDateIOS(String date){
+    DateTime dateTime=DateTime.parse(date);
+    String dat=DateConverter.localDateToIsoString(dateTime);
+    return dat;
   }
 }
