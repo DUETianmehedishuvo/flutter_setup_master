@@ -11,23 +11,14 @@ class LocalizationProvider extends ChangeNotifier {
 
   Locale _locale = Locale('en', 'US');
   bool _isLtr = true;
-
   Locale get locale => _locale;
-
   bool get isLtr => _isLtr;
-
-  saveLanguageStatus(bool status) async {
-    await sharedPreferences.setBool(AppConstant.SELECT_LANGUAGE_STATUS, status);
-    notifyListeners();
-  }
-
-  bool get getLanguageStatus => sharedPreferences.getBool(AppConstant.SELECT_LANGUAGE_STATUS) ?? true;
 
   void setLanguage(Locale locale) {
     _locale = locale;
-    if (_locale.languageCode == 'ar') {
+    if(_locale.languageCode == 'ar') {
       _isLtr = false;
-    } else {
+    }else {
       _isLtr = true;
     }
     _saveLanguage(_locale);
@@ -35,7 +26,8 @@ class LocalizationProvider extends ChangeNotifier {
   }
 
   _loadCurrentLanguage() async {
-    _locale = Locale(sharedPreferences.getString(AppConstant.LANGUAGE_CODE) ?? 'en', sharedPreferences.getString(AppConstant.COUNTRY_CODE) ?? 'US');
+    _locale = Locale(sharedPreferences.getString(AppConstant.LANGUAGE_CODE) ?? 'en',
+        sharedPreferences.getString(AppConstant.COUNTRY_CODE) ?? 'US');
     _isLtr = _locale.languageCode == 'en';
     notifyListeners();
   }

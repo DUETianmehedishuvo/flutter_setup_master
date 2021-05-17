@@ -1,12 +1,8 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:tutorial/localization/language_constrants.dart';
-import 'package:tutorial/util/custom_themes.dart';
-import 'package:tutorial/util/dimensions.dart';
-import 'package:tutorial/util/images.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -15,36 +11,57 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   GlobalKey<ScaffoldState> _globalKey = GlobalKey();
+  StreamSubscription<ConnectivityResult> _onConnectivityChanged;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+
+    bool _firstTime = true;
+    _onConnectivityChanged = Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
+      if (!_firstTime) {
+        bool isNotConnected = result != ConnectivityResult.wifi && result != ConnectivityResult.mobile;
+        isNotConnected ? SizedBox() : _globalKey.currentState.hideCurrentSnackBar();
+        _globalKey.currentState.showSnackBar(SnackBar(
+          backgroundColor: isNotConnected ? Colors.red : Colors.green,
+          duration: Duration(seconds: isNotConnected ? 6000 : 3),
+          content: Text(
+            isNotConnected ? getTranslated('no_connection', _globalKey.currentContext) : getTranslated('connected', _globalKey.currentContext),
+            textAlign: TextAlign.center,
+          ),
+        ));
+        if (!isNotConnected) {
+          _route();
+        }
+      }
+      _firstTime = false;
+    });
+
     _route();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+
+    _onConnectivityChanged.cancel();
+  }
+
   void _route() {
-    Timer(Duration(seconds: 2), () {
-      //Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => LoginScreen()));
+    Timer(Duration(seconds: 1), () async {
+      //Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => LoginScreen()));
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: Colors.white));
-
     return Scaffold(
       key: _globalKey,
-      body: Container(
-        padding: EdgeInsets.symmetric(vertical: 50, horizontal: 20),
+      //backgroundColor: Theme.of(context).primaryColor,
+      body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(child: Container(child: Image.asset(Images.app_logo, width: 130, height: 130))),
-            Text(getTranslated('bapza_mis', context), style: robotoBold.copyWith(fontSize: 25, color: Colors.blueGrey)),
-            SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
-            LinearProgressIndicator()
-          ],
+          mainAxisSize: MainAxisSize.min,
+          children: [Text(getTranslated('splash_screen', context), style: Theme.of(context).textTheme.headline2)],
         ),
       ),
     );
